@@ -24,9 +24,9 @@ class CloudFolderTest(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    def test_example(self):
-        account = Account(self.driver)
-        account.login(self.email, self.password, redirect='https://cloud.mail.ru')
-        ad = StartAd(self.driver)
-        ad.close()
+    # def test_example(self):
+    #     account = Account(self.driver)
+    #     account.login(self.email, self.password, redirect='https://cloud.mail.ru')
+    #     ad = StartAd(self.driver)
+    #     ad.close()
 
