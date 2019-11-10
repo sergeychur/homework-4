@@ -7,7 +7,7 @@ from tests.components.component import Component
 class DataList(Component):
     DATALIST_DIV = '//div[contains(concat(\' \',@class,\' \'),\' b-collection__list_datalist \')]'
     CHECKBOX = './/div[@data-bem="b-checkbox"]'
-    FOLDER = './/div[@data-id="/{}"]'
+    FOLDER = './/div[@data-id="{}"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)

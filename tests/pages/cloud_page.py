@@ -1,3 +1,7 @@
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common import exceptions
+
 from base_page import Page
 from tests.components.start_ad import StartAd
 from tests.components.toolbars import ToolBars
@@ -6,10 +10,12 @@ from tests.components.datalist import DataList
 from tests.components.new_folder_popup import NewFolderPopup
 from tests.components.delete_popup import DeletePopup
 from tests.components.share_popup import SharePopup
+from tests.components.auth_block import AuthBlock
 
 
 class CloudPage(Page):
-    BASE_URL = 'https://cloud.mail.ru/'
+    BASE_URL = 'https://cloud.mail.ru/home/'
+    ERROR_MESSAGE = '//div[@class="notify-message"]'
 
     def __init__(self, driver, path):
         Page.__init__(self, driver)
@@ -43,4 +49,13 @@ class CloudPage(Page):
     def share_popup(self):
         return SharePopup(self.driver)
 
+    @property
+    def auth_block(self):
+        return AuthBlock(self.driver)
 
+    def error_notification_exists(self):
+        try:
+            self.wait(until=EC.presence_of_element_located((By.XPATH, self.ERROR_MESSAGE)))
+        except exceptions.TimeoutException:
+            return False
+        return True

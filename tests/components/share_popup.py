@@ -1,3 +1,5 @@
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
@@ -13,6 +15,8 @@ class SharePopup(Component):
     VIEW_ONLY = './/div[@data-qa-value="read_only"]'
     VIEW_AND_EDIT = './/div[@data-qa-value="read_write"]'
     ERROR = './/div[@class="index__error--37wkb index__error_fix--1pEzE"]'
+    GRANTED = './/div[@data-qa-email="{}"]'
+    # CLOSE_BUTTON = './/svg[@class="Dialog__close--1rKyk"]'
 
     def __init__(self, driver):
         self.types = {
@@ -45,3 +49,10 @@ class SharePopup(Component):
         listbox.click()
         required = self.wait(EC.element_to_be_clickable((By.XPATH, self.types.get(required_type, self.VIEW_AND_EDIT))))
         required.click()
+
+    def wait_till_added(self, name):
+        self.wait(EC.presence_of_element_located((By.XPATH, self.GRANTED.format(name))))
+
+    def close(self):
+        ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
+        self.global_wait(EC.invisibility_of_element((By.XPATH, self.POPUP)))

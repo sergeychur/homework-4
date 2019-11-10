@@ -1,3 +1,5 @@
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
@@ -15,11 +17,15 @@ class Account(Page):
     def set_login(self, login):
         login_field = self.wait(EC.element_to_be_clickable((By.XPATH, self.LOGIN)))
         login_field.click()
+        # login_field.clear() doesn't work on that field!!!!!!!
+        ActionChains(self.driver).key_down(Keys.CONTROL).send_keys('a').key_down(Keys.DELETE).\
+            key_up(Keys.CONTROL).key_up(Keys.DELETE).perform()
         login_field.send_keys(login)
 
     def set_password(self, password):
         password_field = self.wait(EC.element_to_be_clickable((By.XPATH, self.PASSWORD)))
         password_field.click()
+        password_field.clear()
         password_field.send_keys(password)
 
     def go_next(self):
