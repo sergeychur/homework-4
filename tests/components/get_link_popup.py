@@ -10,7 +10,8 @@ class GetLinkPopup(Component):
     LINK_INPUT = './/input[@class="PublishNew__input--1P0Zg"]'
     POPUP = '//div[@data-qa-modal="publish"]'
     LINK_VALUE = 'value'
-    CLOSE_ACCESS = './/div[@class="PublishNew__controls--1cTlD"]'
+    CLOSE_ACCESS = './/div[@class="PublishNew__close--2iYOO"]'
+    REOPEN = './/div[@class="PublishNew__publish--2f0qP"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -23,6 +24,7 @@ class GetLinkPopup(Component):
     def close_access(self):
         close_button = self.wait(EC.presence_of_element_located((By.XPATH, self.CLOSE_ACCESS)))
         close_button.click()
+        self.wait(EC.presence_of_element_located((By.XPATH, self.REOPEN)))
 
     def close_popup(self):
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()

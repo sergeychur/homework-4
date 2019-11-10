@@ -5,10 +5,15 @@ from tests.components.get_link_popup import GetLinkPopup
 from tests.components.datalist import DataList
 from tests.components.new_folder_popup import NewFolderPopup
 from tests.components.delete_popup import DeletePopup
+from tests.components.share_popup import SharePopup
 
 
-class CloudMain(Page):
+class CloudPage(Page):
     BASE_URL = 'https://cloud.mail.ru/'
+
+    def __init__(self, driver, path):
+        Page.__init__(self, driver)
+        self.PATH = path
 
     @property
     def ad(self):
@@ -33,5 +38,9 @@ class CloudMain(Page):
     @property
     def delete_popup(self):
         return DeletePopup(self.driver)
+
+    @property
+    def share_popup(self):
+        return SharePopup(self.driver)
 
 
