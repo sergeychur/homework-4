@@ -26,6 +26,18 @@ class NewFolderPopup(Component):
     def create_new(self, name, base_url):
         self.fill_name(name)
         self.accept()
+        print("wait for ", base_url + name + '/')
         self.global_wait(EC.url_matches(base_url + name + '/'))
+    
+    def create_new_no_wait(self, name, base_url):
+        self.fill_name(name)
+        self.accept()
+    
+    def create_new_with(self, name, base_url):
+        self.fill_name(name)
+        self.accept()
+        print("wait for ", base_url)
+        self.global_wait(EC.url_matches(base_url))
+    
 
 

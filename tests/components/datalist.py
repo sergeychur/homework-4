@@ -8,6 +8,7 @@ class DataList(Component):
     DATALIST_DIV = '//div[contains(concat(\' \',@class,\' \'),\' b-collection__list_datalist \')]'
     CHECKBOX = './/div[@data-bem="b-checkbox"]'
     FOLDER = './/div[@data-id="{}"]'
+    FOLDERA = './/a[@href="/home/a/"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -20,4 +21,8 @@ class DataList(Component):
     def choose_folder_by_name(self, name):
         needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH,
                                                                 self.FOLDER.format(name) + self.CHECKBOX[1:])))
+        needed_checkbox.click()
+    
+    def choose_by_name(self, name):
+        needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDERA)))
         needed_checkbox.click()

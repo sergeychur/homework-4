@@ -14,6 +14,15 @@ class Page(object):
         self.driver.get(url)
         self.driver.maximize_window()
 
+    def move(self, path=""):
+        url = self.BASE_URL
+        if len(path) > 0:
+            url = urlparse.urljoin(url, path)
+        self.driver.get(url)
+
+    def main_page(self):
+        self.move()
+
     def wait(self, until, who=None, timeout=30, step=0.1):
         if who is None:
             who = self.driver

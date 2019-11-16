@@ -11,7 +11,7 @@ from tests.components.new_folder_popup import NewFolderPopup
 from tests.components.delete_popup import DeletePopup
 from tests.components.share_popup import SharePopup
 from tests.components.auth_block import AuthBlock
-
+from tests.components.copy_folder_popup import CopyFolderPopup
 
 class CloudPage(Page):
     BASE_URL = 'https://cloud.mail.ru/home/'
@@ -24,6 +24,11 @@ class CloudPage(Page):
     @property
     def ad(self):
         return StartAd(self.driver)
+
+
+    @property
+    def copy_popup(self):
+        return CopyFolderPopup(self.driver)
 
     @property
     def toolbars(self):
