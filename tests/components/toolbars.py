@@ -19,6 +19,7 @@ class ToolBars(Component):
     DISABLED = 'disabled'
     MORE_BUTTON = './/div[@title="Ещё"]'
     COPY_BUTTON = './/a[@data-name="copy"]'
+    REPLACE_BUTTON = './/a[@data-name="move"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -49,11 +50,18 @@ class ToolBars(Component):
         return share_button.get_attribute(self.DISABLED) is None
 
     def more(self):
+        #self.driver.execute_script("window.scrollTo(document.body.scrollWidth, 0);")
         more_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.MORE_BUTTON)))
         more_button.click()
 
     def copy(self):
+        #self.driver.execute_script("window.scrollTo(document.body.scrollWidth, 0);")
         cb = self.wait(EC.element_to_be_clickable((By.XPATH, self.COPY_BUTTON)))
+        cb.click()
+
+    def move(self):
+        #self.driver.execute_script("window.scrollTo(document.body.scrollWidth, 0);")
+        cb = self.wait(EC.element_to_be_clickable((By.XPATH, self.REPLACE_BUTTON)))
         cb.click()
 
     def download(self):

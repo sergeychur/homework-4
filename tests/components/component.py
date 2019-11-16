@@ -11,5 +11,5 @@ class Component:
             who = self.root
         return WebDriverWait(who, timeout, step).until(until)
 
-    def global_wait(self, until):
-        return WebDriverWait(self.driver, 30, 0.1).until(until)
+    def global_wait(self, until,  timeout=30, step=0.1):
+        return WebDriverWait(self.driver, timeout, step).until(until)

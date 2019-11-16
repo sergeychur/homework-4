@@ -11,13 +11,19 @@ from tests.components.new_folder_popup import NewFolderPopup
 
 class CopyFolderPopup(Component):
     POPUP = '//div[@class="layer_copy"]'
+    POPUPM = '//div[@class="layer_move"]'
     #POPUP = '//div[contains(concat(\' \',@class,\' \'),\' layer_copy \')]'
     CREATE_BUTTON = './/button[@data-name="create-folder"]'
     COPY_BUTTON = './/button[@data-name="copy"]'
+    MOVE_BUTTON = './/button[@data-name="move"]'
+    FOLDER = './/a[@href="/home/{}/"]'
 
-    def __init__(self, driver):
+    def __init__(self, driver, copy=True):
         Component.__init__(self, driver=driver)
-        self.root = self.wait(EC.presence_of_element_located((By.XPATH, self.POPUP)))
+        if copy:
+            self.root = self.wait(EC.presence_of_element_located((By.XPATH, self.POPUP)))
+        else:
+            self.root = self.wait(EC.presence_of_element_located((By.XPATH, self.POPUPM)))
 
     def create_folder(self, name, home_url):
         create_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.CREATE_BUTTON)))
@@ -29,7 +35,16 @@ class CopyFolderPopup(Component):
         copy_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.COPY_BUTTON)))
         copy_button.click()
 
-    def copy_to_folder(self, name):
-        self.datalist = DataList(self.driver)
-        self.datalist.choose_by_name(name)
-        self.copy()
+    def move(self):
+        copy_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.MOVE_BUTTON)))
+        copy_button.click()
+
+    def copy_to_folder(self, name, copy=True):
+        
+        print("move to", name)
+        needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDER.format(name))))
+        needed_checkbox.click()
+        if copy:
+            self.copy()
+        else:
+            self.move()
