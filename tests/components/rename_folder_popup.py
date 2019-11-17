@@ -4,10 +4,10 @@ from selenium.webdriver.common.by import By
 from tests.components.component import Component
 
 
-class NewFolderPopup(Component):
-    POPUP = '//div[contains(concat(\' \',@class,\' \'),\' Dialog__root--2WO7u \')]'
-    INPUT_NAME = './/div[@class="ui fluid focus input"]/input'
-    ACCEPT = './/div[@class="CreateNewFolderDialog__button--7S1Hs"]/button'
+class RenameFolderPopup(Component):
+    POPUP = '//div[@class="layer_rename"]'
+    INPUT_NAME = './/div[@class="layer__fieldset"]/input'
+    ACCEPT = './/button[@data-name="rename"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -23,14 +23,13 @@ class NewFolderPopup(Component):
         input_field.click()
         input_field.send_keys(name)
 
-    def create_new(self, name, base_url):
+    def rename(self, name, base_url):
         self.fill_name(name)
         self.accept()
         self.global_wait(EC.url_matches(base_url + name + '/'))
     
-    def create_new_no_wait(self, name, base_url):
+    def rename_no_wait(self, name, base_url):
         self.fill_name(name)
         self.accept()
-    
 
 
