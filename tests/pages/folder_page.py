@@ -30,5 +30,4 @@ class FolderPage(Page):
     def _check_downloads(self):
          # waits for all the files to be completed and returns the paths
         paths = WebDriverWait(driver, 120, 1).until(every_downloads_chrome)
-        print(paths)
 

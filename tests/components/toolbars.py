@@ -83,6 +83,5 @@ class ToolBars(Component):
             time_counter += 1
             if time_counter > time_to_wait:return False
 
-        print("done")
         return True
 

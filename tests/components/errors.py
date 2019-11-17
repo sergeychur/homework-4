@@ -18,7 +18,6 @@ class Errors(Component):
 
     def isError404(self):
         timeout = 30
-        print("here")
         try:
             self.wait(EC.presence_of_element_located((By.XPATH, self.ERROR404)), timeout)
         except TimeoutException:
