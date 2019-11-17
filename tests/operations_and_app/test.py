@@ -101,7 +101,7 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_folder(folder_name)
 
         files = self.cloud_page.datalist.get_files_names_list()
-        assert self.FILE_NAME in files
+        self.assertIn(self.FILE_NAME, files)
 
     def test_adding_index_to_duplicate(self):
         folder_name = 'intest'
@@ -111,15 +111,14 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_folder(folder_name)
 
         files = self.cloud_page.datalist.get_files_names_list()
-        print files
-        assert self.FILE_NAME + ' (1)' in files
+        self.assertIn(self.FILE_NAME + ' (1)', files)
 
     def test_file_removing(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
 
-        assert self.FILE_NAME not in self.cloud_page.datalist.get_files_names_list()
+        self.assertNotIn(self.FILE_NAME, self.cloud_page.datalist.get_files_names_list())
 
     def test_moving_removed_file_to_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
@@ -128,7 +127,7 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_bin()
 
         files = self.cloud_page.bin.get_items_names()
-        assert self.FILE_NAME in files
+        self.assertIn(self.FILE_NAME, files)
 
     def test_file_moving(self):
         folder_name = 'intest'
@@ -136,14 +135,14 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.file_menu.move_file(self.FILE_NAME, folder_name)
         self.cloud_page.move_to_folder(folder_name)
 
-        assert self.FILE_NAME in self.cloud_page.datalist.get_files_names_list()
+        self.assertIn(self.FILE_NAME, self.cloud_page.datalist.get_files_names_list())
 
     def test_file_renaming(self):
         new_name = 'new_name'
 
         self.cloud_page.file_menu.rename_file(self.FILE_NAME, new_name)
 
-        assert new_name in self.cloud_page.datalist.get_files_names_list()
+        self.assertIn(new_name, self.cloud_page.datalist.get_files_names_list())
 
     def test_clear_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
@@ -152,11 +151,9 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_bin()
         self.cloud_page.bin.clear()
 
-        files = self.cloud_page.bin.get_items_names()
-        print files
-        assert len(files) == 0
+        self.assertNotIn(self.FILE_NAME, self.cloud_page.bin.get_items_names())
 
-    def ctest_restoring_from_bin(self):
+    def test_restoring_from_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
@@ -164,7 +161,7 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.bin.restore_file(self.FILE_NAME, 'test')
         self.cloud_page.go_back()
 
-        assert self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + self.FILE_NAME)
+        self.assertTrue(self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + self.FILE_NAME))
 
     def test_restoring_with_index(self):
         current_folder = 'test'
@@ -180,14 +177,21 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.go_back()
 
         new_name = self.FILE_NAME + ' (1)'
-        assert self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + new_name)
+        self.assertTrue(self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + new_name))
 
     def test_showing_history(self):
         self.cloud_page.file_menu.open_history(self.FILE_NAME)
         history = self.cloud_page.history_popup.get_history_list()
         self.cloud_page.history_popup.close()
 
-        assert len(history) > 0
+        self.assertTrue(len(history) > 0)
+
+    def ttest_replace_file_without_subscription(self):
+        self.cloud_page.go_back()
+        self.cloud_page.file_menu.open_history(self.FILE_NAME)
+        self.cloud_page.history_popup.replace_with_last()
+
+        assert not self.cloud_page.history_popup.is_replacing_allowed()
 
     def test_downloading(self):
         download_path = '/tmp/'
@@ -195,7 +199,7 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.file_menu.download_file(self.FILE_NAME)
         self.is_downloaded = wait_download(download_path + self.FILE_NAME)
 
-        assert self.is_downloaded
+        self.assertTrue(self.is_downloaded)
 
     def test_attaching_to_letter(self):
         self.cloud_page.file_menu.send(self.FILE_NAME)
@@ -203,8 +207,8 @@ class OperationsTest(unittest.TestCase):
         url = self.driver.current_url
 
         self.driver.switch_to.window(self.driver.window_handles[0])
-        assert 'https://e.mail.ru/compose/?cloud_files_ids' in url
-        assert self.FILE_NAME in url
+        self.assertIn('https://e.mail.ru/compose/?cloud_files_ids', url)
+        self.assertIn(self.FILE_NAME, url)
 
     def test_open_google_play(self):
         expected_url = 'https://play.google.com/store/apps/details?id=ru.mail.cloud'
@@ -215,7 +219,7 @@ class OperationsTest(unittest.TestCase):
         current_url = self.driver.current_url
 
         self.driver.switch_to.window(self.driver.window_handles[0])
-        assert current_url == expected_url
+        self.assertEqual(current_url, expected_url)
 
     def test_open_app_store(self):
         expected_url = 'https://apps.apple.com/ru/app/oblako-mail-ru/id696551382'
@@ -226,7 +230,7 @@ class OperationsTest(unittest.TestCase):
         current_url = self.driver.current_url
 
         self.driver.switch_to.window(self.driver.window_handles[0])
-        assert current_url == expected_url
+        self.assertEqual(current_url, expected_url)
 
     def test_open_app_downloading_page(self):
         current_os = 'mac' if platform.system() == 'Linux' else platform.system()
@@ -236,4 +240,4 @@ class OperationsTest(unittest.TestCase):
         system = self.cloud_page.download_window.get_os_message()
         self.cloud_page.download_window.close_popup()
 
-        assert current_os in system
+        self.assertIn(current_os, system)
