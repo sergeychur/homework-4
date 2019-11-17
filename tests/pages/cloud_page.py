@@ -23,8 +23,10 @@ from tests.components.copy_folder_popup import CopyFolderPopup
 
 from tests.components.start_ad import StartAd
 from tests.components.toolbars import ToolBars
+from tests.components.uploading import Uploader
 
 from tests.components.errors import Errors
+
 
 class CloudPage(Page):
     BASE_URL = 'https://cloud.mail.ru/home/'
@@ -42,13 +44,14 @@ class CloudPage(Page):
     CREATE_BTN = '//button[@class="ui fluid primary button"][contains(.,"Создать")]'
 
     FILES_ICONS_SELECTOR = 'div.b-collection__item'
+    FILES_NAMES = '//div[@class="b-filename__text"]'
 
     BIN_LINK = '//span[@class="b-nav__item__text"][contains(.,"Корзина")]'
+    FOLDER_NAV_LINK = '(//div[@data-id="{}"][contains(@class,"b-nav__item js-href b-nav__item_active")])[1]'
 
     current_path = '/'
     previous_path = '/'
     is_first_removing = True
-
 
     def __init__(self, driver, path):
         Page.__init__(self, driver)
@@ -59,7 +62,6 @@ class CloudPage(Page):
     @property
     def ad(self):
         return StartAd(self.driver)
-
 
     @property
     def copy_popup(self):
@@ -105,7 +107,6 @@ class CloudPage(Page):
     def auth_block(self):
         return AuthBlock(self.driver)
 
-
     def is_folder_exist(self, path):
         self.main_page()
         self.move(path)
@@ -114,6 +115,10 @@ class CloudPage(Page):
         except exceptions.TimeoutException:
             return True
         return False
+
+    @property
+    def uploader(self):
+        return Uploader(self.driver)
 
     @property
     def download_window(self):
@@ -137,22 +142,27 @@ class CloudPage(Page):
         name_input.send_keys(name)
         create_btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.CREATE_BTN)))
         create_btn.click()
+        xpath = self.FOLDER_NAV_LINK.format(self.current_path + name)
+        self.wait(EC.presence_of_element_located((By.XPATH, xpath)))
 
     def move_to_folder(self, name):
-        file_links = self.driver.find_elements(By.CSS_SELECTOR, self.FILES_ICONS_SELECTOR)
-        for f in file_links:
-            if f.text == name:
+        files_number = len(self.driver.find_elements(By.XPATH, self.FILES_NAMES))
+        result = []
+        for i in range(1, files_number + 1):
+            file_name = self.wait(EC.presence_of_element_located(
+                (By.XPATH, '({})[{}]'.format(self.FILES_NAMES, i)))).text
+            if file_name == name:
+                f = self.wait(EC.element_to_be_clickable(
+                    (By.XPATH, '({})[{}]'.format(self.FILES_NAMES, i))))
                 f.click()
-                old_path = '/' if self.current_path == '/' else self.current_path[:-1]
-                xpath = '//a[@data-id="{}"]'.format(old_path)
-                self.wait(EC.element_to_be_clickable((By.XPATH, xpath)))
+                xpath = self.FOLDER_NAV_LINK.format(self.current_path + name)
+                self.wait(EC.presence_of_element_located((By.XPATH, xpath)))
                 self.previous_path = self.current_path
                 self.current_path += '{}/'.format(name)
                 break
+            result.append(file_name)
 
     def move_to_bin(self):
-        # bin_link = self.wait(EC.element_to_be_clickable((By.XPATH, self.BIN_LINK)))
-        # bin_link.click()
         self.driver.get(self.BIN_URL)
         self.download_window.close_popup()
         self.previous_path = self.current_path

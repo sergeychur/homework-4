@@ -20,11 +20,15 @@ class DownloadWindow(Component):
 
     def download_for_android(self):
         btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.ANDROID_BTN)))
-        btn.click()
+        self.driver.execute_script("window.scrollTo(0, {});".format(btn.location_once_scrolled_into_view['y']))
+        ActionChains(self.driver).move_to_element(btn).click().perform()
+        self.driver.execute_script("window.scrollTo(0, 0);")
 
     def download_for_ios(self):
         btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.IOS_BTN)))
-        btn.click()
+        self.driver.execute_script("window.scrollTo(0, {});".format(btn.location_once_scrolled_into_view['y']))
+        ActionChains(self.driver).move_to_element(btn).click().perform()
+        self.driver.execute_script("window.scrollTo(0, 0);")
 
     def download_for_desktop(self):
         btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.DESKTOP_BTN)))
