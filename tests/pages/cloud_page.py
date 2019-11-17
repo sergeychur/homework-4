@@ -16,6 +16,7 @@ from tests.components.new_folder_popup import NewFolderPopup
 from tests.components.share_popup import SharePopup
 from tests.components.start_ad import StartAd
 from tests.components.toolbars import ToolBars
+from tests.components.uploading import Uploader
 
 
 class CloudPage(Page):
@@ -86,6 +87,10 @@ class CloudPage(Page):
         return AuthBlock(self.driver)
 
     @property
+    def uploader(self):
+        return Uploader(self.driver)
+
+    @property
     def download_window(self):
         return DownloadWindow(self.driver)
 
@@ -107,6 +112,9 @@ class CloudPage(Page):
         name_input.send_keys(name)
         create_btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.CREATE_BTN)))
         create_btn.click()
+        xpath = self.FOLDER_NAV_LINK.format(self.current_path + name)
+        print xpath
+        self.wait(EC.presence_of_element_located((By.XPATH, xpath)))
 
     def move_to_folder(self, name):
         files_number = len(self.driver.find_elements(By.XPATH, self.FILES_NAMES))
