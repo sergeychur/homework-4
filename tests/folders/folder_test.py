@@ -264,7 +264,6 @@ class CloudFolderTest(unittest.TestCase):
         if self.downloads == '-':
             self.downloads = self.home+("/Загрузки")
             
-        print(self.downloads)
         self.email = os.environ['EMAIL']
         self.password = os.environ['PASSWORD']
         self.driver = Remote(
@@ -336,25 +335,25 @@ class CloudFolderTest(unittest.TestCase):
         dInC = c + "/" + d
         dInAC=  a +"/" + c + "/" + d
         self.assertFalse(self.cur_cloud_page.is_folder_exist(cInA))
-        print("c location: home/c")
+        #c location: home/c"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(dInC))
-        print("d location: home/c/d")
+        #d location: home/c/d"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(bInA))
-        print("b location: home/a/b")
+        #b location: home/a/b"
 
         self._copy(c,a)
-        print("copy 'c' to 'a'")
+        #copy 'c' to 'a'"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInA))
-        print("c location: home/a/c")
+        #c location: home/a/c"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(dInAC))
-        print("d location: home/a/c/d")
+        #d location: home/a/c/d"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(bInA))
-        print("b location: home/a/b")
+        #b location: home/a/b"
     
     '''
     При нажатии на кнопку ‘Копировать’ и выборе папки, в которой есть
@@ -368,25 +367,25 @@ class CloudFolderTest(unittest.TestCase):
         cInAB = a + "/" + "b (1)" + "/" + c
        
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b1InA))
-        print("first b location: home/a/b")
+        #first b location: home/a/b
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b2))
-        print("second b location: home/b")
+        #second b location: home/b
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInB2))
-        print("c location: home/b/c")
+        #c location: home/b/c
 
         self._copy(b2,a)
-        print("copy 'b' to 'a'")
+        #copy 'b' to 'a'
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b1InA))
-        print("first b location: home/a/b")
+        #first b location: home/a/b")
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b2InA))
-        print("second b location: home/a/b (1)")
+        #second b location: home/a/b (1)
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInAB))
-        print("second b location: home/a/b (1)/c")
+        #second b location: home/a/b (1)/c
  
     '''
     При нажатии на кнопку ‘Копировать’ и выборе папки, в которой есть 
@@ -400,27 +399,27 @@ class CloudFolderTest(unittest.TestCase):
         dInAC= a +"/" + c + "/" + d
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(c))
-        print("c location: home/c")
+        #c location: home/c
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(dInC))
-        print("d location: home/c/d")
+        #d location: home/c/d
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(bInA))
-        print("b location: home/a/b")
+        #b location: home/a/b
 
         self._replace(c,a)
-        print("move 'c' to 'a'")
+        #move 'c' to 'a'
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInA))
         self.assertFalse(self.cur_cloud_page.is_folder_exist(c))
-        print("c location: home/a/c")
+        #c location: home/a/c
 
         self.assertFalse(self.cur_cloud_page.is_folder_exist(dInC))
         self.assertTrue(self.cur_cloud_page.is_folder_exist(dInAC))
-        print("d location: home/a/c/d")
+        #d location: home/a/c/d"
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(bInA))
-        print("b location: home/a/b")
+        #b location: home/a/b"
 
     '''
     При нажатии на кнопку ‘Переместить’ и выборе папки, в которой есть папка с таким
@@ -434,26 +433,26 @@ class CloudFolderTest(unittest.TestCase):
         cInAB = a + "/" + "b (1)" + "/" + c
        
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b1InA))
-        print("first b location: home/a/b")
+        #first b location: home/a/b
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b2))
-        print("second b location: home/b")
+        #second b location: home/b
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInB2))
-        print("c location: home/b/c")
+        #c location: home/b/c
 
         self._replace(b2,a)
-        print("copy 'b' to 'a'")
+        #copy 'b' to 'a'
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b1InA))
-        print("first b location: home/a/b")
+        #first b location: home/a/b
 
         self.assertFalse(self.cur_cloud_page.is_folder_exist(b2))
         self.assertTrue(self.cur_cloud_page.is_folder_exist(b2InA))
-        print("second b location: home/a/b (1)")
+        #second b location: home/a/b (1)
 
         self.assertTrue(self.cur_cloud_page.is_folder_exist(cInAB))
-        print("second b location: home/a/b (1)/c")
+        #second b location: home/a/b (1)/c
 
     '''
     Все тесты связанные с созданием папок или их переименованием должны быть
@@ -467,8 +466,8 @@ class CloudFolderTest(unittest.TestCase):
         self._new_folder(name=not_allowed, no_wait=True)
         self.cur_cloud_page.move(not_allowed)
         self.assertFalse( self.cur_cloud_page.is_folder_exist(not_allowed))
-        print("A folder with a name of 256 characters can't be created")
-        print("more: https://help.mail.ru/cloud_web/confines")
+        #A folder with a name of 256 characters can't be created
+        #more: https://help.mail.ru/cloud_web/confines
 
         allowed = self._buildblock(255)
         self.cur_cloud_page.main_page()
@@ -476,7 +475,7 @@ class CloudFolderTest(unittest.TestCase):
         self.cur_cloud_page.move(allowed)
         self.assertTrue( self.cur_cloud_page.is_folder_exist(allowed))
         self._delete_folder(allowed)
-        print("A folder with a name of 255 characters can be created")
+        #A folder with a name of 255 characters can be created
 
     ''' 
     При вводе пустого имени, операция создания папки завершается с ошибкой
@@ -550,15 +549,15 @@ class CloudFolderTest(unittest.TestCase):
         allowed = self._buildblock(255)
         self._rename_folder(allowed, main)
         self.assertTrue(self.cur_cloud_page.is_folder_exist(allowed))
-        print("A folder with a name of 255 characters can be created")
+        #A folder with a name of 255 characters can be created
         
         self._rename_folder(main, allowed)
 
         not_allowed = self._buildblock(256)
         self._rename_folder(not_allowed, main)
         self.assertFalse( self.cur_cloud_page.is_folder_exist(not_allowed))
-        print("A folder with a name of 256 characters can't be created")
-        print("more: https://help.mail.ru/cloud_web/confines")
+        #A folder with a name of 256 characters can't be created
+        #more: https://help.mail.ru/cloud_web/confines
 
         self.assertTrue( self.cur_cloud_page.is_folder_exist(main))
 

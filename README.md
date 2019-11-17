@@ -24,6 +24,11 @@
         export EMAIL=<TEST_EMAIL_1>
     ```
     ```
+    export DOWNLOAD_FOLDER=<FOLDER>
+    ```
+     , где FOLDER папка для загрузок браузера в директории HOME. Если не задать значение, по умолчанию будет использоваться
+     /Загрузки
+    ```
         export PASSWORD=<TEST_PASSWORD_1>
     ```
     ```
