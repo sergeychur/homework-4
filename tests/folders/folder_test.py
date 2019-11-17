@@ -265,7 +265,6 @@ class CloudFolderTest(unittest.TestCase):
             self.downloads = self.home+("/Загрузки")
             
         print(self.downloads)
-        print("self.downloads:", self.downloads)
         self.email = os.environ['EMAIL']
         self.password = os.environ['PASSWORD']
         self.driver = Remote(
