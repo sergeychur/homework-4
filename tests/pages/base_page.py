@@ -23,7 +23,6 @@ class Page(object):
             if path[-1] != '/':
                 path =  path + "/"
             url = url + path
-        print('move path:', url)
         self.driver.get(url)
 
     def main_page(self):

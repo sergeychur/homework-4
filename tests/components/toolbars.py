@@ -20,6 +20,7 @@ class ToolBars(Component):
     MORE_BUTTON = './/div[@title="Ещё"]'
     COPY_BUTTON = './/a[@data-name="copy"]'
     REPLACE_BUTTON = './/a[@data-name="move"]'
+    RENAME_BUTTON = './/a[@data-name="rename"]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -64,15 +65,19 @@ class ToolBars(Component):
         cb = self.wait(EC.element_to_be_clickable((By.XPATH, self.REPLACE_BUTTON)))
         cb.click()
 
+    def rename(self):
+        #self.driver.execute_script("window.scrollTo(document.body.scrollWidth, 0);")
+        cb = self.wait(EC.element_to_be_clickable((By.XPATH, self.RENAME_BUTTON)))
+        cb.click()
+
     def download(self):
         download_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.DOWNLOAD_BUTTON)))
         download_button.click()
     
     def check_downloads(self, file_path):
          # waits for all the files to be completed and returns the paths
-        time_to_wait = 30
+        time_to_wait = 5
         time_counter = 0
-        print("file_path:", file_path)
         while not os.path.exists(file_path):
             time.sleep(1)
             time_counter += 1

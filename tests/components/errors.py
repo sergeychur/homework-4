@@ -22,9 +22,5 @@ class Errors(Component):
         try:
             self.wait(EC.presence_of_element_located((By.XPATH, self.ERROR404)), timeout)
         except TimeoutException:
-            print("TimeoutException")
             return False
-        # except StaleElementReferenceException:
-        #     print("StaleElementReferenceException")
-        #     return False
         return True

@@ -1,5 +1,6 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 from tests.components.component import Component
 
@@ -23,6 +24,14 @@ class DataList(Component):
                                                                 self.FOLDER.format(name) + self.CHECKBOX[1:])))
         needed_checkbox.click()
     
+    def choose_no_wait(self, name):
+        try:
+            needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDER.format(name) + self.CHECKBOX[1:])), 1)
+            needed_checkbox.click()
+        except TimeoutException:
+            return False
+        return True
+            
     def choose_by_name(self, name):
         needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDERA)))
         needed_checkbox.click()

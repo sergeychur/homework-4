@@ -40,8 +40,6 @@ class CopyFolderPopup(Component):
         copy_button.click()
 
     def copy_to_folder(self, name, copy=True):
-        
-        print("move to", name)
         needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDER.format(name))))
         needed_checkbox.click()
         if copy:

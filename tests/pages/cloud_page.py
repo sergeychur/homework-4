@@ -9,6 +9,7 @@ from tests.components.toolbars import ToolBars
 from tests.components.get_link_popup import GetLinkPopup
 from tests.components.datalist import DataList
 from tests.components.new_folder_popup import NewFolderPopup
+from tests.components.rename_folder_popup import RenameFolderPopup
 from tests.components.delete_popup import DeletePopup
 from tests.components.share_popup import SharePopup
 from tests.components.auth_block import AuthBlock
@@ -50,6 +51,10 @@ class CloudPage(Page):
     @property
     def new_folder_popup(self):
         return NewFolderPopup(self.driver)
+
+    @property
+    def rename_folder_popup(self):
+        return RenameFolderPopup(self.driver)
 
     @property
     def delete_popup(self):
