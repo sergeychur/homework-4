@@ -1,4 +1,5 @@
 # coding=utf-8
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
@@ -19,8 +20,11 @@ class Bin(Component):
         self.root = self.wait(EC.presence_of_element_located((By.XPATH, self.CLEAR_BIN_BTN)))
 
     def __get_items_list(self):
-        self.wait(EC.presence_of_element_located((By.XPATH, self.FILES_LISTS_ROW)), 5)
-        items_rows = self.driver.find_elements(By.XPATH, self.FILES_LISTS_ROW)
+        try:
+            self.wait(EC.presence_of_element_located((By.XPATH, self.FILES_LISTS_ROW)), 10)
+            items_rows = self.driver.find_elements(By.XPATH, self.FILES_LISTS_ROW)
+        except TimeoutException:
+            items_rows = []
         return items_rows
 
     def get_items_names(self):

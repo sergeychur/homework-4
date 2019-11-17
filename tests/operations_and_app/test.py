@@ -111,6 +111,7 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_folder(folder_name)
 
         files = self.cloud_page.datalist.get_files_names_list()
+        print files
         assert self.FILE_NAME + ' (1)' in files
 
     def test_file_removing(self):
@@ -151,9 +152,11 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.move_to_bin()
         self.cloud_page.bin.clear()
 
-        assert self.FILE_NAME not in self.cloud_page.bin.get_items_names()
+        files = self.cloud_page.bin.get_items_names()
+        print files
+        assert len(files) == 0
 
-    def test_restoring_from_bin(self):
+    def ctest_restoring_from_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
@@ -185,13 +188,6 @@ class OperationsTest(unittest.TestCase):
         self.cloud_page.history_popup.close()
 
         assert len(history) > 0
-
-    def ttest_replace_file_without_subscription(self):
-        self.cloud_page.go_back()
-        self.cloud_page.file_menu.open_history(self.FILE_NAME)
-        self.cloud_page.history_popup.replace_with_last()
-
-        assert not self.cloud_page.history_popup.is_replacing_allowed()
 
     def test_downloading(self):
         download_path = '/tmp/'
