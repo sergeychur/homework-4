@@ -10,6 +10,7 @@ class DataList(Component):
     FILE_ICON = '//div[@data-id="{}"][@data-bem="b-thumb"]'
     CHECKBOX = './/div[@data-bem="b-checkbox"]'
     FOLDER = './/div[@data-id="{}"]'
+    FOLDERA = './/a[@href="/home/a/"]'
     FILES_NAMES = '//div[@class="b-filename__text"]'
 
     def __init__(self, driver):
@@ -24,7 +25,19 @@ class DataList(Component):
         needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH,
                                                                 self.FOLDER.format(name) + self.CHECKBOX[1:])))
         needed_checkbox.click()
-
+    
+    def choose_no_wait(self, name):
+        try:
+            needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDER.format(name) + self.CHECKBOX[1:])), 1)
+            needed_checkbox.click()
+        except TimeoutException:
+            return False
+        return True
+            
+    def choose_by_name(self, name):
+        needed_checkbox = self.wait(EC.element_to_be_clickable((By.XPATH, self.FOLDERA)))
+        needed_checkbox.click()
+        
     def does_file_exist(self, path):
         try:
             self.wait(EC.element_to_be_clickable((By.XPATH, self.FILE_ICON.format(path))))
