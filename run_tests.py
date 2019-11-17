@@ -6,9 +6,7 @@ from tests import CloudFileAccessTest, CloudFolderTest, OperationsTest
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
-        unittest.makeSuite(CloudFileAccessTest),
         unittest.makeSuite(CloudFolderTest),
-        unittest.makeSuite(OperationsTest)
 
     ))
     result = unittest.TextTestRunner().run(suite)

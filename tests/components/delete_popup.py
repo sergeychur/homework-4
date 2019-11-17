@@ -9,6 +9,7 @@ from tests.components.component import Component
 class DeletePopup(Component):
     POPUP = '//div[contains(concat(\' \',@class,\' \'),\' layer_remove \')]'
     ACCEPT = './/button[@data-name="remove"]'
+    SUBMIT = '//button[@data-name="close"][@class="btn btn_main btn_neighboring "]'
 
     def __init__(self, driver):
         Component.__init__(self, driver=driver)
@@ -17,6 +18,11 @@ class DeletePopup(Component):
     def accept(self):
         accept_button = self.wait(EC.element_to_be_clickable((By.XPATH, self.ACCEPT)))
         accept_button.click()
+
+    def submit(self):
+        submit_btn = self.wait(EC.element_to_be_clickable((By.XPATH, self.SUBMIT)))
+        submit_btn.click()
+        self.global_wait(EC.invisibility_of_element((By.XPATH, self.POPUP)))
 
     def close(self):
         ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
