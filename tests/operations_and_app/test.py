@@ -82,7 +82,7 @@ class OperationsTest(unittest.TestCase):
 
         self.driver.quit()
 
-    def htest_file_coping(self):
+    def test_file_coping(self):
         folder_name = 'intest'
 
         self.cloud_page.file_menu.copy_file(self.FILE_NAME, folder_name)
@@ -91,7 +91,7 @@ class OperationsTest(unittest.TestCase):
         files = self.cloud_page.datalist.get_files_names_list()
         self.assertIn(self.FILE_NAME, files)
 
-    def htest_adding_index_to_duplicate(self):
+    def test_adding_index_to_duplicate(self):
         folder_name = 'intest'
 
         self.cloud_page.file_menu.copy_file(self.FILE_NAME, folder_name)
@@ -101,14 +101,14 @@ class OperationsTest(unittest.TestCase):
         files = self.cloud_page.datalist.get_files_names_list()
         self.assertIn(self.FILE_NAME + ' (1)', files)
 
-    def htest_file_removing(self):
+    def test_file_removing(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
 
         self.assertNotIn(self.FILE_NAME, self.cloud_page.datalist.get_files_names_list())
 
-    def htest_moving_removed_file_to_bin(self):
+    def test_moving_removed_file_to_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
@@ -125,14 +125,14 @@ class OperationsTest(unittest.TestCase):
 
         self.assertIn(self.FILE_NAME, self.cloud_page.datalist.get_files_names_list())
 
-    def htest_file_renaming(self):
+    def test_file_renaming(self):
         new_name = 'new_name'
 
         self.cloud_page.file_menu.rename_file(self.FILE_NAME, new_name)
 
         self.assertIn(new_name, self.cloud_page.datalist.get_files_names_list())
 
-    def htest_clear_bin(self):
+    def test_clear_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
@@ -141,7 +141,7 @@ class OperationsTest(unittest.TestCase):
 
         self.assertNotIn(self.FILE_NAME, self.cloud_page.bin.get_items_names())
 
-    def htest_restoring_from_bin(self):
+    def test_restoring_from_bin(self):
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
         self.first_deletion = False
         self.cloud_page.delete_popup.submit()
@@ -151,7 +151,7 @@ class OperationsTest(unittest.TestCase):
 
         self.assertTrue(self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + self.FILE_NAME))
 
-    def htest_restoring_with_index(self):
+    def test_restoring_with_index(self):
         current_folder = 'test'
 
         self.cloud_page.file_menu.remove_file(self.FILE_NAME)
@@ -167,27 +167,20 @@ class OperationsTest(unittest.TestCase):
         new_name = self.FILE_NAME + ' (1)'
         self.assertTrue(self.cloud_page.datalist.does_file_exist(self.cloud_page.current_path + new_name))
 
-    def htest_showing_history(self):
+    def test_showing_history(self):
         self.cloud_page.file_menu.open_history(self.FILE_NAME)
         history = self.cloud_page.history_popup.get_history_list()
         self.cloud_page.history_popup.close()
 
         self.assertTrue(len(history) > 0)
 
-    def ttest_replace_file_without_subscription(self):
-        self.cloud_page.go_back()
-        self.cloud_page.file_menu.open_history(self.FILE_NAME)
-        self.cloud_page.history_popup.replace_with_last()
-
-        assert not self.cloud_page.history_popup.is_replacing_allowed()
-
-    def htest_downloading(self):
+    def test_downloading(self):
         self.cloud_page.file_menu.download_file(self.FILE_NAME)
         self.is_downloaded = wait_download(self.download_folder + self.FILE_NAME)
 
         self.assertTrue(self.is_downloaded)
 
-    def htest_attaching_to_letter(self):
+    def test_attaching_to_letter(self):
         self.cloud_page.file_menu.send(self.FILE_NAME)
         self.driver.switch_to.window(self.driver.window_handles[1])
         url = self.driver.current_url
@@ -196,7 +189,7 @@ class OperationsTest(unittest.TestCase):
         self.assertIn('https://e.mail.ru/compose/?cloud_files_ids', url)
         self.assertIn(self.FILE_NAME, url)
 
-    def htest_open_google_play(self):
+    def test_open_google_play(self):
         expected_url = 'https://play.google.com/store/apps/details?id=ru.mail.cloud'
 
         self.driver.refresh()
@@ -207,7 +200,7 @@ class OperationsTest(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.assertEqual(current_url, expected_url)
 
-    def htest_open_app_store(self):
+    def test_open_app_store(self):
         expected_url = 'https://apps.apple.com/ru/app/oblako-mail-ru/id696551382'
 
         self.driver.refresh()
@@ -218,7 +211,7 @@ class OperationsTest(unittest.TestCase):
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.assertEqual(current_url, expected_url)
 
-    def htest_open_app_downloading_page(self):
+    def test_open_app_downloading_page(self):
         current_os = 'mac' if platform.system() == 'Linux' else platform.system()
 
         self.driver.refresh()
